@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0a0e17; color: #f1f5f9; font-family: 'Inter', sans-serif; }
+    body { font-family: 'Inter', sans-serif; transition: background 0.3s, color 0.3s; }
     #root { min-height: 100vh; }
     @media (max-width: 768px) {
       .slide-content { padding: 16px !important; }
@@ -24,13 +24,33 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    const colors = {
-      bg: '#0a0e17', bgCard: '#111827', bgLight: '#1e293b',
-      accent: '#14b8a6', accentAlt: '#2dd4bf',
-      text: '#f1f5f9', textDim: '#94a3b8', textMuted: '#64748b',
-      border: '#334155',
-      success: '#22c55e', danger: '#ef4444', warn: '#f59e0b', info: '#0ea5e9', purple: '#a78bfa', cyan: '#22d3ee', teal: '#14b8a6'
+    // Palette colori per i due temi
+    const themes = {
+      dark: {
+        bg: '#0a0e17', bgCard: '#111827', bgLight: '#1e293b',
+        accent: '#14b8a6', accentAlt: '#2dd4bf',
+        text: '#f1f5f9', textDim: '#94a3b8', textMuted: '#64748b',
+        border: '#334155',
+        success: '#22c55e', danger: '#ef4444', warn: '#f59e0b', info: '#0ea5e9', purple: '#a78bfa', cyan: '#22d3ee', teal: '#14b8a6',
+        codeBg: '#0d1117', codeHeader: '#161b22'
+      },
+      light: {
+        bg: '#f8fafc', bgCard: '#ffffff', bgLight: '#f1f5f9',
+        accent: '#0d9488', accentAlt: '#14b8a6',
+        text: '#1e293b', textDim: '#475569', textMuted: '#64748b',
+        border: '#e2e8f0',
+        success: '#16a34a', danger: '#dc2626', warn: '#d97706', info: '#0284c7', purple: '#7c3aed', cyan: '#0891b2', teal: '#0d9488',
+        codeBg: '#f1f5f9', codeHeader: '#e2e8f0'
+      }
     };
+
+    // Funzione per ottenere il tema salvato
+    const getSavedTheme = () => localStorage.getItem('ipv6-theme') || 'dark';
+    const colors = themes[getSavedTheme()];
+
+    // Applica tema al body all'avvio
+    document.body.style.background = colors.bg;
+    document.body.style.color = colors.text;
 
     const Box = ({ type = 'info', title, children }) => {
       const cfg = { info: { c: colors.info, i: 'ℹ️' }, warn: { c: colors.warn, i: '⚠️' }, danger: { c: colors.danger, i: '🛑' }, tip: { c: colors.purple, i: '💡' }, success: { c: colors.success, i: '✓' }, teal: { c: colors.teal, i: '🌐' } };
